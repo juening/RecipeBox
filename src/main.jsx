@@ -62,12 +62,10 @@ var RecipeBox = React.createClass({
       this.setState({loadedRecipes:allRecipes});
       var newStoredRecipes = JSON.stringify(allRecipes);
       localStorage.setItem("storedRecipes",  newStoredRecipes);
-
     },//add new recipe
+
     deleteRecipe: function(recipeKey){
       allRecipes.splice(recipeKey, 1);
-
-
       this.setState({loadedRecipes:allRecipes});
       var newStoredRecipes = JSON.stringify(allRecipes);
       localStorage.setItem("storedRecipes",  newStoredRecipes);
@@ -77,12 +75,11 @@ var RecipeBox = React.createClass({
 
     render: function(){
         return (
-
-          <div >
+          <div className="col-sm-6 col-sm-offset-3">
               <RecipeList allRecipes = {this.state.loadedRecipes} updateRecipes = {this.updateRecipe} deleteRecipe = {this.deleteRecipe}/>
               <RecipeAdd addRecipe={this.addRecipe} />
           </div>
-        )
+        );
     }
 });
 
@@ -95,6 +92,7 @@ var RecipeList = React.createClass({
   deleteRecipe: function(targetRecipe){
     this.props.deleteRecipe(targetRecipe);
   },
+
   render: function(){
       var allRecipes = this.props.allRecipes;
       var deleteRecipe = this.deleteRecipe;
@@ -104,8 +102,7 @@ var RecipeList = React.createClass({
       // var delete = this.props.delete;
       var RecipesArray = allRecipes.map(function(recipe, index){
         var id = index;
-
-        return (<Panel header={recipe.title} eventKey={id} className="panel panel-primary">
+        return (<Panel header={recipe.title} eventKey={id} className="panel panel-primary recipe">
                   <RecipeModal key={id}  Recipe ={recipe} id = {id} updateRecipe={updateRecipe} deleteRecipe = {deleteRecipe}  />
                </Panel>);
       });
