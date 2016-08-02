@@ -199,10 +199,17 @@ var RecipeModal = React.createClass({
 var RecipeAdd = React.createClass({
   getInitialState: function(){
     return {
+      showModal:false,
       ingredients:[],
       title:''
     }
   },//getInitialState
+  close() {
+    this.setState({ showModal: false });
+  },
+  open() {
+    this.setState({ showModal: true });
+  },
   onTitleChange: function(e){
     this.setState({title: e.target.value});
   },
@@ -216,23 +223,48 @@ var RecipeAdd = React.createClass({
     var newRecipe = {ingredients: ingred, title: newTitle};
     this.setState(newRecipe);
     this.props.addRecipe(newRecipe);
+    this.close();
   },
   render:function(){
     return (
-      <div className="panel panel-primary">
-        <div className="panel-heading">
-          <h3>Add New Recipe</h3>
-        </div>
-        <div className="panel-body">
+      <div>
+       <Button className="addRecipe btn pull-right" onClick={this.open} bsStyle="success"><i className="glyphicon glyphicon-cutlery"></i> Add Recipe</Button>
+        <Modal show={this.state.showModal} onHide={this.close}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Recipe</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <form onSubmit={this.handleSubmit}>
-              <h4>Recipe Title</h4>
-              <input onChange={this.onTitleChange} value={this.state.title} className="form-control"/>
-               <h4>Recipe Ingredients</h4>
-              <textarea onChange={this.onIngredChange} value={this.state.ingredients} className="form-control"></textarea>
-              <button className="btn btn-primary">Add Recipe</button>
+              <label for="RecipeTitle">Recipe Title</label><br/>
+              <input onChange={this.onTitleChange} type="text" placeholder="Recipe Name" />
+              <br />
+              <label for="RecipeIngred">Ingredients</label><br/>
+              <textarea onChange={this.onIngredChange}  type="text" rows="3" cols="60" placeholder="ingredients separated by commas"></textarea>
             </form>
-        </div>
+
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleSubmit}>Save</Button>
+
+            <Button onClick={this.close}>Close</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
+
+      // <div className="panel panel-primary">
+      //   <div className="panel-heading">
+      //     <h3>Add New Recipe</h3>
+      //   </div>
+      //   <div className="panel-body">
+      //       <form onSubmit={this.handleSubmit}>
+      //         <h4>Recipe Title</h4>
+      //         <input onChange={this.onTitleChange} value={this.state.title} className="form-control"/>
+      //          <h4>Recipe Ingredients</h4>
+      //         <textarea onChange={this.onIngredChange} value={this.state.ingredients} className="form-control"></textarea>
+      //         <button className="btn btn-primary">Add Recipe</button>
+      //       </form>
+      //   </div>
+      // </div>
     )
   }
 

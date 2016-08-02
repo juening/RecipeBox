@@ -243,10 +243,17 @@ var RecipeAdd = React.createClass({
 
   getInitialState: function () {
     return {
+      showModal: false,
       ingredients: [],
       title: ''
     };
   }, //getInitialState
+  close() {
+    this.setState({ showModal: false });
+  },
+  open() {
+    this.setState({ showModal: true });
+  },
   onTitleChange: function (e) {
     this.setState({ title: e.target.value });
   },
@@ -260,46 +267,85 @@ var RecipeAdd = React.createClass({
     var newRecipe = { ingredients: ingred, title: newTitle };
     this.setState(newRecipe);
     this.props.addRecipe(newRecipe);
+    this.close();
   },
   render: function () {
     return React.createElement(
       "div",
-      { className: "panel panel-primary" },
+      null,
       React.createElement(
-        "div",
-        { className: "panel-heading" },
-        React.createElement(
-          "h3",
-          null,
-          "Add New Recipe"
-        )
+        Button,
+        { className: "addRecipe btn pull-right", onClick: this.open, bsStyle: "success" },
+        React.createElement("i", { className: "glyphicon glyphicon-cutlery" }),
+        " Add Recipe"
       ),
       React.createElement(
-        "div",
-        { className: "panel-body" },
+        Modal,
+        { show: this.state.showModal, onHide: this.close },
         React.createElement(
-          "form",
-          { onSubmit: this.handleSubmit },
+          Modal.Header,
+          { closeButton: true },
           React.createElement(
-            "h4",
+            Modal.Title,
             null,
-            "Recipe Title"
-          ),
-          React.createElement("input", { onChange: this.onTitleChange, value: this.state.title, className: "form-control" }),
-          React.createElement(
-            "h4",
-            null,
-            "Recipe Ingredients"
-          ),
-          React.createElement("textarea", { onChange: this.onIngredChange, value: this.state.ingredients, className: "form-control" }),
-          React.createElement(
-            "button",
-            { className: "btn btn-primary" },
             "Add Recipe"
+          )
+        ),
+        React.createElement(
+          Modal.Body,
+          null,
+          React.createElement(
+            "form",
+            { onSubmit: this.handleSubmit },
+            React.createElement(
+              "label",
+              { "for": "RecipeTitle" },
+              "Recipe Title"
+            ),
+            React.createElement("br", null),
+            React.createElement("input", { onChange: this.onTitleChange, type: "text", placeholder: "Recipe Name" }),
+            React.createElement("br", null),
+            React.createElement(
+              "label",
+              { "for": "RecipeIngred" },
+              "Ingredients"
+            ),
+            React.createElement("br", null),
+            React.createElement("textarea", { onChange: this.onIngredChange, type: "text", rows: "3", cols: "60", placeholder: "ingredients separated by commas" })
+          )
+        ),
+        React.createElement(
+          Modal.Footer,
+          null,
+          React.createElement(
+            Button,
+            { onClick: this.handleSubmit },
+            "Save"
+          ),
+          React.createElement(
+            Button,
+            { onClick: this.close },
+            "Close"
           )
         )
       )
-    );
+    )
+
+    // <div className="panel panel-primary">
+    //   <div className="panel-heading">
+    //     <h3>Add New Recipe</h3>
+    //   </div>
+    //   <div className="panel-body">
+    //       <form onSubmit={this.handleSubmit}>
+    //         <h4>Recipe Title</h4>
+    //         <input onChange={this.onTitleChange} value={this.state.title} className="form-control"/>
+    //          <h4>Recipe Ingredients</h4>
+    //         <textarea onChange={this.onIngredChange} value={this.state.ingredients} className="form-control"></textarea>
+    //         <button className="btn btn-primary">Add Recipe</button>
+    //       </form>
+    //   </div>
+    // </div>
+    ;
   }
 
 });
